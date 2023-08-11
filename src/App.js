@@ -1,4 +1,5 @@
 import "./App.css";
+import AddMovie from "./components/AddMovie";
 import MoviesList from "./components/MoviesList";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -49,9 +50,15 @@ function App() {
     contents = <p>{error}</p>;
   }
 
+const addMovie=(movie)=>{
+ console.log(movie)
+}
+
+
   return (
     <React.Fragment>
-      <section>
+      
+      <section><AddMovie addMovie={addMovie}/>
         <button onClick={fetchMovieHandler}>Fetch Movies</button>
       </section>
       <section>{contents}</section>
