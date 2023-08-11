@@ -12,23 +12,34 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch(
+        "https://moviedb-http-default-rtdb.firebaseio.com/movies.json"
+      );
 
       if (!response) {
         throw new Error("Something went wrong!");
       }
 
       const movieData = await response.json();
+      const loaded = [];
+      for (const key in movieData) {
+        loaded.push({
+          id: key,
+          title: movieData[key].title,
+          openingText: movieData[key].opening_crawl,
+          releaseDate: movieData[key].release_date,
+        });
+      }
 
-      const data = movieData.results.map((movie) => {
-        return {
-          id: movie.episode_id,
-          title: movie.title,
-          releaseDate: movie.release_date,
-          openingText: movie.opening_crawl,
-        };
-      });
-      setMovies(data);
+      // const data = movieData.results.map((movie) => {
+      //   return {
+      //     id: movie.episode_id,
+      //     title: movie.title,
+      //     releaseDate: movie.release_date,
+      //     openingText: movie.opening_crawl,
+      //   };
+      // });
+      setMovies(loaded);
       setIsLoading(false);
     } catch (error) {
       setError(error.message);
@@ -50,15 +61,25 @@ function App() {
     contents = <p>{error}</p>;
   }
 
-const addMovie=(movie)=>{
- console.log(movie)
-}
-
+  const addMovie = async (movie) => {
+    const response = await fetch(
+      "https://moviedb-http-default-rtdb.firebaseio.com/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    const data = response.json();
+    console.log(data)
+  };
 
   return (
     <React.Fragment>
-      
-      <section><AddMovie addMovie={addMovie}/>
+      <section>
+        <AddMovie addMovie={addMovie} />
         <button onClick={fetchMovieHandler}>Fetch Movies</button>
       </section>
       <section>{contents}</section>

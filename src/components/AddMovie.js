@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
-import classes from './AddMovie.module.css'
+import classes from "./AddMovie.module.css";
 
 export default function AddMovie(props) {
   const titleRef = useRef();
   const openingTextRef = useRef();
   const releaseDateRef = useRef();
-
 
   const addMovieHandler = (event) => {
     event.preventDefault();
@@ -15,25 +14,26 @@ export default function AddMovie(props) {
       releaseDate: releaseDateRef.current.value,
     };
     props.addMovie(movie);
+    titleRef.current.value=''
+   openingTextRef.current.value=''
+   releaseDateRef.current.value=''
   };
-
 
   return (
     <form onSubmit={addMovieHandler}>
       <div className={classes.control}>
         <label htmlFor="title">Title</label>
-        <input type="text" id="title" ref={titleRef}/>
+        <input type="text" id="title" ref={titleRef} />
       </div>
       <div className={classes.control}>
         <label htmlFor="opening">Opening Text</label>
-        <input type="text" id="opening" ref={openingTextRef}/>
+        <input type="text" id="opening" ref={openingTextRef} />
       </div>
       <div className={classes.control}>
         <label htmlFor="date">Release Date</label>
-        <in type="date" id="date" ref={releaseDateRef} />
+        <input type="date" id="date" ref={releaseDateRef} />
       </div>
       <button className={classes.control}>Submit</button>
     </form>
   );
-
 }
