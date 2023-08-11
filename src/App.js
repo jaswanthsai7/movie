@@ -5,22 +5,19 @@ import React, { useState } from "react";
 function App() {
   const [movies, setMovies] = useState([]);
 
-  const fetchMovieHandler = () => {
-    fetch("https://swapi.dev/api/films/")
-      .then((response) => {return response.json()})
-      .then((movieData) => {
-        const data = movieData.results.map((movie) => {
-          return {
-            id: movie.episode_id,
-            title: movie.title,
-            releaseDate: movie.release_date,
-            openingText: movie.opening_crawl,
-          };
-        });
-        setMovies(data);
-      }).catch(error=>console.error(error));
-  };
-
+  async function fetchMovieHandler() {
+    const response = await fetch("https://swapi.dev/api/films/");
+    const movieData = await response.json();
+    const data = movieData.results.map((movie) => {
+      return {
+        id: movie.episode_id,
+        title: movie.title,
+        releaseDate: movie.release_date,
+        openingText: movie.opening_crawl,
+      };
+    });
+    setMovies(data);
+  }
 
   return (
     <React.Fragment>
